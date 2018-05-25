@@ -50,15 +50,11 @@ class MiniLexer(object):
       A sequence of lexer matches.
     '''
 
-    logging.debug("##LEXT: starting lexical analysis on file " + text)
-    
     stack = ['root']
     pos = 0
 
     patterns = self.tokens[stack[-1]]
 
-    print str(patterns)
-    
     while True:
       for pat, action, new_state in patterns:
         m = pat.match(text, pos)
@@ -75,7 +71,7 @@ class MiniLexer(object):
             else:
               stack.append(new_state)
 
-            logging.debug('##LEX: CHANGE STATE:', pos, new_state, stack)
+            logging.debug('##LEX: pos:' + str(pos) + " n_state:" + str(new_state) + " stack:" + str(stack))
             patterns = self.tokens[stack[-1]]
 
           break

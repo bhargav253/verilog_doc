@@ -2,16 +2,12 @@
 //# describes an encoder implmentation
 
 module encoder(
-	       binary_out , //  4 bit binary Output
-	       encoder_in , //  16-bit Input
-	       enable       //  Enable for the encoder
+	       output [3:0] binary_out , //  4 bit binary Output
+	       input [15:0] encoder_in , //  16-bit Input
+	       input enable       //  Enable for the encoder
 	       );
    
-   output [3:0] binary_out;
-   input 	enable;
-   input [15:0] encoder_in;
-
-   reg [3:0] 	binary_out;
+   logic [3:0] 	binary_out;
 
    always @ (enable or encoder_in)
      begin
