@@ -2,8 +2,6 @@
 
 import parser.verilog_parser as vlog
 
-print "blah"
-
 vlog_ex = vlog.VerilogExtractor()
 vlog_mods = vlog_ex.extract_objects('verilog/encoder.v')
 

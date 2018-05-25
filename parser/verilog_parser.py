@@ -130,6 +130,8 @@ def parse_verilog(text):
   objects = []
 
   for pos, action, groups in lex.run(text):
+    logging.debug("##VPARSE: lex yields pos " + str(pos) + " action:" + str(action))
+
     if action == 'metacomment':
       if last_item is None:
         metacomments.append(groups[0])
@@ -256,8 +258,6 @@ class VerilogExtractor(object):
     Returns:
       List of parsed objects.
     '''
-
-    logging.debug("##VPARSE: parsing file " + text)
 
     objects = parse_verilog(text)
 
