@@ -1,14 +1,18 @@
 /*Encoder*/
 //# describes an encoder implmentation
 
-module encoder(
-	       output [3:0] binary_out , //  4 bit binary Output
-	       input [15:0] encoder_in , //  16-bit Input
-	       input enable       //  Enable for the encoder
-	       );
+module encoder
+  #( parameter NUM_BITS = 16,  // number of bits to encode
+     parameter OUT_BITS = 4    // output bits
+     )
+   (
+    output [OUT_BITS-1:0] binary_out , //  encoder Output
+    input [NUM_BITS-1:0]  encoder_in , //  encoder Input
+    input 		  enable       //  Enable for the encoder
+    );
    
-   logic [3:0] 	binary_out;
-
+   logic [OUT_BITS-1:0]   binary_out;
+   
    always @ (enable or encoder_in)
      begin
 	binary_out = 0;

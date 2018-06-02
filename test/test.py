@@ -1,9 +1,12 @@
 #!/usr/bin/python2.7
 
-import parser.verilog_parser as vlog
+import sys
+sys.path.append('../parser')
+
+import verilog_parser as vlog
 
 vlog_ex = vlog.VerilogExtractor()
-vlog_mods = vlog_ex.extract_objects('verilog/encoder.v')
+vlog_mods = vlog_ex.extract_objects('../verilog/encoder.v')
 
 for m in vlog_mods:
     print('Module "{}":'.format(m.name))
