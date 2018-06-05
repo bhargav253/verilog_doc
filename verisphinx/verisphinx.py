@@ -28,14 +28,8 @@ class VeriObject(ObjectDescription):
     has_arguments = True
 
     #: what is displayed right before the documentation entry
-    display_prefix = "module "
+    display_prefix = None
 
-    doc_field_types = [
-        GroupedField('params', label=l_('Parameter'), rolename='param',
-                     names=('parameter','localparam' ),
-                     can_collapse=True),
-    ]
-    
     def handle_signature(self, sig, signode):
         sig = sig.strip()
         prefix = sig
@@ -46,7 +40,7 @@ class VeriObject(ObjectDescription):
             nameprefix = None
             name = prefix
 
-        objectname = self.env.ref_context.get('veri:object')
+        objectname     = self.env.ref_context.get('veri:object')
         if nameprefix:
             if objectname:
                 # someone documenting the method of an attribute of the current
@@ -99,13 +93,31 @@ class VeriObject(ObjectDescription):
         name, obj = name_obj
         if self.objtype == 'module':
             return _('%s() (module)') % name
-        elif self.objtype == 'input':
-            return _('%s() (input)')  % name
-        elif self.objtype == 'output':
-            return _('%s() (output)') % name
-        else:
-            return _('%s (%s notmod)') % (name, obj)
+        elif self.objtype == 'struct':
+            return _('%s() (struct)')  % name
         return ''
+
+class VeriModule(VeriObject):
+    """
+    Description of a verilog module
+    """
+    #: what is displayed right before the documentation entry
+    display_prefix = 'module '
+
+    doc_field_types = [
+        GroupedField('params', label=l_('Parameter'), rolename='param',
+                     names=('parameter','localparam' ),
+                     can_collapse=True),
+    ]
+
+    
+class VeriStruct(VeriObject):
+    """
+    Description of a verilog module
+    """
+    #: what is displayed right before the documentation entry
+    display_prefix = 'struct '
+
 
 class VeriXRefRole(XRefRole):
     def process_link(self, env, refnode, has_explicit_title, title, target):
@@ -132,12 +144,15 @@ class VeriDomain(Domain):
     # if you add a new object type make sure to edit VeriObject.get_index_string
     object_types = {
         'module':  ObjType(l_('module'),  'module'),
+        'struct':  ObjType(l_('struct'),  'struct'),        
     }
     directives = {
-        'module': VeriObject,
+        'module': VeriModule,
+        'struct': VeriStruct,        
     }
     roles = {
         'module': VeriXRefRole(),
+        'struct': VeriXRefRole(),        
     }
     initial_data = {
         'objects': {},  # fullname -> docname, objtype
